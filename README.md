@@ -1,7 +1,7 @@
 # GPU-based-fuzzy-clustering
 ---
 # Brief overview
-Current repository is assumed to contain an implementation of GPU-based clustering algorithms, in particular, Fuzzy-C-Means and its spatial modification for image segmentation. DirectX acts as the main technology in image processing and the segmentation itself. Most likely the final result of the development will be arranged as a framework with simple one-image-one-window output. The whole project is the part of pre-graduate internship.
+Current repository is assumed to contain a GPU-based implementation of clustering algorithms, in particular, Fuzzy-C-Means and its spatial modification for image segmentation. DirectX acts as the main technology in image processing and the segmentation itself. Most likely the final result of the development will be arranged as a framework with simple one-image-one-window output. The whole project is the part of pre-graduate internship.
 
 ---
 # Description
