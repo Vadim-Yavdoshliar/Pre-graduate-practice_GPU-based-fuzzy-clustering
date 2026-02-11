@@ -28,4 +28,5 @@ Current repository is assumed to contain a GPU-based implementation of clusterin
 5. Build a solution
 6. Run a program
 
-
+## Modules
+![No file found](Approximate_scheme.jpg)
