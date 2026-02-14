@@ -200,6 +200,102 @@ bool globalState::windowIsOpen()
 	return data.windowWorks;
 }
 
+void globalState::loadVertexShader(USHORT index, const std::wstring& filePath)
+{
+	if (data.device == nullptr)
+	{
+		throw std::exception("\n\n\tException : Attempt to create a shader before graphics is initialized");
+	}
+	ComPtr<ID3DBlob> blob;
+	auto hr = D3DReadFileToBlob(filePath.c_str(), &blob);
+	if (hr != S_OK)
+	{
+		std::cout << "\n\tVertex shader loading failed. Incorrect file path specified or general internal error occured.";
+		return;
+	}
+	ComPtr<ID3D11VertexShader> shader;
+	hr = data.device->CreateVertexShader
+	(
+		blob->GetBufferPointer(), 
+		blob->GetBufferSize(),
+		nullptr,
+		&shader
+	);
+	if (hr != S_OK)
+	{
+		std::cout << "\n\tVertex shader loading failed. Loaded shader isn't a shader or corrupted. Internal error occured.";
+		return;
+	}
+	data.vertexShaders[index] = shader;
+}
+
+void globalState::loadPixelShader(USHORT index, const std::wstring& filePath)
+{
+	if (data.device == nullptr)
+	{
+		throw std::exception("\n\n\tException : Attempt to create a shader before graphics is initialized");
+	}
+	ComPtr<ID3DBlob> blob;
+	auto hr = D3DReadFileToBlob(filePath.c_str(), &blob);
+	if (hr != S_OK)
+	{
+		std::cout << "\n\tPixel shader loading failed. Incorrect file path specified or general internal error occured.";
+		return;
+	}
+	ComPtr<ID3D11VertexShader> shader;
+	hr = data.device->CreateVertexShader
+	(
+		blob->GetBufferPointer(),
+		blob->GetBufferSize(),
+		nullptr,
+		&shader
+	);
+	if (hr != S_OK)
+	{
+		std::cout << "\n\Pixel shader loading failed. Loaded shader isn't a shader or corrupted. Internal error occured.";
+		return;
+	}
+	data.vertexShaders[index] = shader;
+}
+
+void globalState::setVertexShader(USHORT index)
+{
+	if (data.device == nullptr)
+	{
+		throw std::exception("\n\n\tException : Attempt to set a shader before graphics is initialized");
+	}
+	if (data.vertexShaders.find(index) == data.vertexShaders.end())
+	{
+		std::cout << "\n\tWarning. Attempt to set a shader that doesn't exist.";
+	}
+
+	data.context->VSSetShader
+	(
+		data.vertexShaders[index].Get(),
+		NULL,
+		NULL
+	);
+}
+
+void globalState::setPixelShader(USHORT index)
+{
+	if (data.device == nullptr)
+	{
+		throw std::exception("\n\n\tException : Attempt to set a shader before graphics is initialized");
+	}
+	if (data.pixelShaders.find(index) == data.pixelShaders.end())
+	{
+		std::cout << "\n\tWarning. Attempt to set a shader that doesn't exist.";
+	}
+
+	data.context->PSSetShader
+	(
+		data.pixelShaders[index].Get(),
+		NULL,
+		NULL
+	);
+}
+
 void globalState::processState()
 {
 	MSG msg = {};
@@ -211,6 +307,7 @@ void globalState::processState()
 void globalState::draw()
 {
 	if (!checkCompleteInit()) {
+		resetState();
 		throw std::exception("\n\nDrawing cannot be performed till all the things are initialized\n\n");
 	}
 	
@@ -223,27 +320,23 @@ void globalState::draw()
 
 void globalState::freeResources()
 {
+	
+	data.vertexShaders.clear();
+	data.pixelShaders.clear();
+	
 	data.device = nullptr;
 	data.context = nullptr;
 	data.factory = nullptr;
 	data.swapchain = nullptr;
+	data.query = nullptr;
+	data.target = nullptr;
+	data.windowWorks = false;
 	
-	for (auto& shader : data.vertexShaders)
-	{
-		shader.second = nullptr;
-	}
-	data.vertexShaders.clear();
-
-	for (auto& shader : data.pixelShaders)
-	{
-		shader.second = nullptr;
-	}
-	data.pixelShaders.clear();
-
 	if (data.wndPtr != nullptr)
 	{
 		DestroyWindow(data.wndPtr);
 		UnregisterClassW(data.className,GetModuleHandleW(NULL));
+		data.wndPtr = nullptr;
 	}
 
 }
@@ -252,10 +345,13 @@ bool globalState::checkCompleteInit()
 {
 	return
 		data.device != nullptr &&
-		data.wndPtr != nullptr;
+		data.wndPtr != nullptr &&
+		data.swapchain != nullptr;
 }
 
 void globalState::resetState()
 {
+	freeResources();
 	std::cout << "\n\tException thrown. Global state got reset.\n\n";
 }
+

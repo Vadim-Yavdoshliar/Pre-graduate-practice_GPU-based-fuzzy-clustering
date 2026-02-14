@@ -9,6 +9,9 @@ using namespace Microsoft::WRL;
 #include <dxgi1_2.h>
 #pragma comment(lib, "dxgi.lib")
 
+#include <d3dcompiler.h>
+#pragma comment(lib, "D3DCompiler.lib")
+
 #include <string>
 #include <unordered_map>
 #include <exception>
@@ -24,8 +27,8 @@ static void initDrawingSurface();
 
 static bool windowIsOpen();
 
-static void loadVertexShader(USHORT index, const std::string& filePath);
-static void loadPixelShader(USHORT index, const std::string& filePath);
+static void loadVertexShader(USHORT index, const std::wstring& filePath);
+static void loadPixelShader(USHORT index, const std::wstring& filePath);
 
 static void setVertexShader(USHORT index);
 static void setPixelShader(USHORT index);
@@ -62,7 +65,7 @@ private:
 		std::unordered_map<USHORT, ComPtr<ID3D11VertexShader>> vertexShaders;
 		std::unordered_map<USHORT, ComPtr<ID3D11PixelShader>> pixelShaders;
 
-		HWND wndPtr;
+		HWND wndPtr = nullptr;
 		FLOAT clearColor[4] = {0.0f,0.0f,1.0f,1.0f};
 		const wchar_t* className = L"GRAPHICS_WINDOW";
 	};
