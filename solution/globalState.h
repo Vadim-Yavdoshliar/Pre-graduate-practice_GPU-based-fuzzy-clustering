@@ -49,6 +49,11 @@ private:
 	static bool checkCompleteInit();
 	static void resetState();
 
+	struct imageReference {
+		ComPtr<ID3D11Texture2D> texture;
+		ComPtr<ID3D11ShaderResourceView> resourceView;
+	};
+
 	struct state_data {
 
 		USHORT windowWidth = 0u, windowHeight = 0u;
@@ -64,6 +69,7 @@ private:
 
 		std::unordered_map<USHORT, ComPtr<ID3D11VertexShader>> vertexShaders;
 		std::unordered_map<USHORT, ComPtr<ID3D11PixelShader>> pixelShaders;
+		std::unordered_map<USHORT, imageReference> images;
 
 		HWND wndPtr = nullptr;
 		FLOAT clearColor[4] = {0.0f,0.0f,1.0f,1.0f};

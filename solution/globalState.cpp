@@ -1,6 +1,10 @@
 
 
 #include "globalState.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
 
 globalState::state_data globalState::data;
 
@@ -267,6 +271,7 @@ void globalState::setVertexShader(USHORT index)
 	if (data.vertexShaders.find(index) == data.vertexShaders.end())
 	{
 		std::cout << "\n\tWarning. Attempt to set a shader that doesn't exist.";
+		return;
 	}
 
 	data.context->VSSetShader
@@ -286,6 +291,7 @@ void globalState::setPixelShader(USHORT index)
 	if (data.pixelShaders.find(index) == data.pixelShaders.end())
 	{
 		std::cout << "\n\tWarning. Attempt to set a shader that doesn't exist.";
+		return;
 	}
 
 	data.context->PSSetShader
@@ -294,6 +300,26 @@ void globalState::setPixelShader(USHORT index)
 		NULL,
 		NULL
 	);
+}
+
+void globalState::loadImage(USHORT index, const std::string& filePath)
+{
+	if (data.device == nullptr)
+	{
+		throw std::exception("\n\n\tException : Attempt to load an image before graphics is initialized");
+	}
+
+	int width, height;
+	unsigned char* res = stbi_load(filePath.c_str(), &width, &height, nullptr, 4);
+	if (res == nullptr)
+	{
+		std::cout << "\n\tSpecified image wasn't found";
+		return;
+	}
+
+	D3D11_TEXTURE2D_DESC desc;
+	desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+
 }
 
 void globalState::processState()
