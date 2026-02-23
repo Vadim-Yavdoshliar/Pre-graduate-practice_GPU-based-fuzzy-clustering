@@ -36,11 +36,13 @@ static void setPixelShader(USHORT index);
 static void loadImage(USHORT index,const std::string& filePath);
 static void removeImage(USHORT index);
 
+static void setImage(USHORT index);
+
 static void createImageLikeBuffer();
 static void createConstBuffer();
 
 static void processState();
-static void draw();
+static void draw(UINT imageIndex);
 
 static void freeResources();
 
@@ -50,11 +52,13 @@ private:
 	static void resetState();
 
 	struct imageReference {
+		UINT width = 0u, height = 0u;
 		ComPtr<ID3D11Texture2D> texture;
 		ComPtr<ID3D11ShaderResourceView> resourceView;
+		ComPtr<ID3D11Buffer> vertexBuf;
 	};
 
-	struct state_data {
+	struct stateData {
 
 		USHORT windowWidth = 0u, windowHeight = 0u;
 		bool windowWorks = false;
@@ -64,19 +68,21 @@ private:
 		ComPtr<IDXGIFactory2> factory;
 		ComPtr<IDXGISwapChain1> swapchain;
 		ComPtr<ID3D11Query> query;
+		ComPtr<ID3D11SamplerState> sampler;
 
 		ComPtr<ID3D11RenderTargetView> target;
 
 		std::unordered_map<USHORT, ComPtr<ID3D11VertexShader>> vertexShaders;
 		std::unordered_map<USHORT, ComPtr<ID3D11PixelShader>> pixelShaders;
+		ComPtr<ID3D11InputLayout> inputLayout;
 		std::unordered_map<USHORT, imageReference> images;
 
 		HWND wndPtr = nullptr;
-		FLOAT clearColor[4] = {0.0f,0.0f,1.0f,1.0f};
+		FLOAT clearColor[4] = {0.2f,0.5f,0.5f,1.0f};
 		const wchar_t* className = L"GRAPHICS_WINDOW";
 	};
 
-	static state_data data;
+	static stateData data;
 
 	static LRESULT windowProcedure(HWND wnd, UINT msg,WPARAM wParam, LPARAM lParam);
 
