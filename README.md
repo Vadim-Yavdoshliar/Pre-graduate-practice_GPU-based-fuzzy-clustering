@@ -28,5 +28,7 @@ Current repository is assumed to contain a GPU-based implementation of clusterin
 5. Build a solution
 6. Run a program
 
-## Modules
-![No file found](Approximate_scheme.jpg)
+# Basic graphics acrhitecture
+![No file found](overall_graphics.jpg)
+# Overall GPU-FCM workflow
+![No file found](shader_workflow.jpg)
