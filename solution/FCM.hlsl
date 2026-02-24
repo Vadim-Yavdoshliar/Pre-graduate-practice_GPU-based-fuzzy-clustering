@@ -47,12 +47,13 @@ float4 main(VERTEX input) : SV_TARGET
     {
         assignmentPos.z = i;
         float modifiedAssignment = pow(assignmentMatrix[assignmentPos], m);
+        modifiedAssignment = mul(modifiedAssignment, 1000000.0f);
         float4 modifiedPixel = mul(modifiedAssignment, pixel);
-        InterlockedAdd(newCenters[i].nr, modifiedPixel.r);
-        InterlockedAdd(newCenters[i].ng, modifiedPixel.g);
-        InterlockedAdd(newCenters[i].nb, modifiedPixel.b);
-        InterlockedAdd(newCenters[i].na, modifiedPixel.a);
-        InterlockedAdd(newCenters[i].d, modifiedAssignment);
+        InterlockedAdd(newCenters[i].nr, (uint)modifiedPixel.r);
+        InterlockedAdd(newCenters[i].ng, (uint)modifiedPixel.g);
+        InterlockedAdd(newCenters[i].nb, (uint)modifiedPixel.b);
+        InterlockedAdd(newCenters[i].na, (uint)modifiedPixel.a);
+        InterlockedAdd(newCenters[i].d, (uint)modifiedAssignment);
         
     }
     
