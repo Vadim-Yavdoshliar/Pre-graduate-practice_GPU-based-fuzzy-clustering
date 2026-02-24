@@ -21,6 +21,9 @@
     <ClInclude Include="globalState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FCM_GPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="globalState.cpp">
@@ -29,12 +32,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FCM_GPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="vs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="FCM.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

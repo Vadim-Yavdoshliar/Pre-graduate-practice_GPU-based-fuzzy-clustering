@@ -453,23 +453,6 @@ void globalState::loadImage(USHORT index, const std::string& filePath)
 	bufDesc.CPUAccessFlags = 0;
 	bufDesc.MiscFlags = 0;
 
-	{
-		auto t_width = width;
-		auto t_height = height;
-		if (t_width > t_height)
-		{
-			t_width = data.windowWidth;
-			float ratio = (float)width / t_width;
-			t_height /= ratio;
-		}
-		else{
-			t_height = data.windowHeight;
-			float ratio = (float)height / t_height;
-			t_width *= ratio;
-
-		}
-	}
-
 	imageRectangle[0] = { {-1.0f,  1.0f}, {0.0f, 0.0f} }; 
 	imageRectangle[1] = { { 1.0f,  1.0f}, {1.0f, 0.0f} }; 
 	imageRectangle[2] = { {-1.0f, -1.0f}, {0.0f, 1.0f} }; 
@@ -495,6 +478,12 @@ void globalState::loadImage(USHORT index, const std::string& filePath)
 	imgRef.resourceView = textureView;
 	imgRef.vertexBuf = buffer;
 	data.images[index] = imgRef;
+	
+	auto sw = GetSystemMetrics(SM_CXSCREEN);
+	auto sh = GetSystemMetrics(SM_CYSCREEN);
+
+	SetWindowPos(data.wndPtr, nullptr, (sw-width)/2, (sh-height)/2, width, height, SWP_NOZORDER);
+
 }
 
 void globalState::processState()
