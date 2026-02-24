@@ -32,3 +32,5 @@ Current repository is assumed to contain a GPU-based implementation of clusterin
 ![No file found](overall_graphics.jpg)
 # Overall GPU-FCM workflow
 ![No file found](shader_workflow.jpg)
+# Pixel data (RGBA + Assignment values)
+![No file found](pixelGif.gif)
